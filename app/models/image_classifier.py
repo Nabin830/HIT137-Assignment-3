@@ -1,11 +1,11 @@
 from transformers import pipeline                     # Importing the  Hugging Face pipeline
 from PIL import Image                                 # it is used for  opening images
 from .base import HFModelBase, LoggingMixin, CachingMixin
-from ..utils.decorators import timed, validate_input
+from app.utils.decorators import timed, validate_input
 
 class ImageClassifier(LoggingMixin, CachingMixin, HFModelBase):
 
-    def __init__(self, model_id: str = "google/vit-base-patch16-224"):
+    def __init__(self, model_id: str = "apple/mobilevit-x-small"):
         super().__init__(model_id)                    # Call base class constructor
         # Creating  the Hugging Face pipeline for image classifications
         self._set_pipeline(pipeline("image-classification", model=model_id))
@@ -29,4 +29,4 @@ class ImageClassifier(LoggingMixin, CachingMixin, HFModelBase):
 
     def info(self) -> str:
         # Description of this model for GUI/info display
-        return "Image classification (ViT Base). Input: image path or PIL Image. Output: label + score."
+        return "Image classification (MobileViT X-Small). Input: image path or PIL Image. Output: label + score."
