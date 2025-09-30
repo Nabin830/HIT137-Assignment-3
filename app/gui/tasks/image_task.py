@@ -1,10 +1,10 @@
 from PIL import Image
-from app.models.image_classifier import ImageClassifier
+from ...models.image_classifier import ImageClassifier
 from .base import BaseTask
 
 
 class ImageTask(BaseTask):
-    """Runs image classification using ImageClassifier (MobileViT X-Small)."""
+    """Runs image classification using ImageClassifier (ViT Base)."""
 
     def __init__(self):
         super().__init__()
@@ -18,4 +18,4 @@ class ImageTask(BaseTask):
         return out
 
     def info(self) -> str:
-        return "Image classification (MobileViT X-Small). Input: image path or PIL.Image. Output: label + score."
+        return "Image classification (ViT Base). Input: image path or PIL.Image. Output: label + score."

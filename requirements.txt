@@ -1,3 +1,5 @@
 transformers
-torch
+torch>=2.6.0
 pillow
+numpy<2.0
+tensorflow
