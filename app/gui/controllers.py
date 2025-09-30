@@ -69,7 +69,7 @@ class AppController:
     def model_infos() -> dict:
         return {
             "Sentiment": "Text Sentiment via Transformers. Input: a sentence. Output: label + score.",
-            "Image": "Image Classification (MobileViT X-Small). Input: image path. Output: top label + score.",
+            "Image": "Image Classification (MobileViT X-Small). Input: image path. Output: detailed predictions with top 5 possibilities and descriptive analysis of image contents.",
         }
 
     @staticmethod

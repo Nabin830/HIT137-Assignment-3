@@ -203,7 +203,8 @@ class InputFrame(ttk.Frame):
 
             # Send result to output frame
             if self.output_frame:
-                self.output_frame.display_result(str(result))
+                model_name = self.controller.model_var.get()
+                self.output_frame.display_result(result, model_name)
 
             # Show notification and offer to switch to output tab
             if messagebox.askyesno(
@@ -262,8 +263,8 @@ Ready for analysis! 🚀
         self.out.see("end")
         self.out.configure(state="disabled")
 
-    def display_result(self, result):
-        """Display result directly with timestamp and formatting"""
+    def display_result(self, result, model_name=None):
+        """Display result with proper formatting based on model type"""
         import datetime
 
         self.out.configure(state="normal")
@@ -280,7 +281,16 @@ Ready for analysis! 🚀
         header = f"\n{separator}\n🔍 Analysis #{self.result_count} - {timestamp}\n{separator}\n"
 
         self.out.insert("end", header)
-        self.out.insert("end", f"{result}\n")
+
+        # Format output based on model type
+        if model_name == "Image" and isinstance(result, dict):
+            self._format_image_result(result)
+        elif model_name == "Sentiment" and isinstance(result, dict):
+            self._format_sentiment_result(result)
+        else:
+            # Fallback to string representation
+            self.out.insert("end", f"{result}\n")
+
         self.out.see("end")
         self.out.configure(state="disabled")
 
@@ -288,6 +298,57 @@ Ready for analysis! 🚀
         self.result_count_label.configure(
             text=f"{self.result_count} result{'s' if self.result_count != 1 else ''}",
             foreground="green",
+        )
+
+    def _format_image_result(self, result):
+        """Format image classification results with enhanced details"""
+        # Main classification
+        main_label = result.get("label", "Unknown")
+        main_score = result.get("score", 0.0)
+
+        self.out.insert("end", f"🖼️  IMAGE CLASSIFICATION RESULTS\n\n")
+        self.out.insert("end", f"Primary Classification: {main_label.title()}\n")
+        self.out.insert("end", f"Confidence: {main_score:.1%}\n\n")
+
+        # Description if available
+        if "description" in result:
+            self.out.insert("end", f"📝 Description:\n{result['description']}\n\n")
+
+        # Top predictions if available
+        if "top_predictions" in result:
+            self.out.insert("end", f"🏆 Top Predictions:\n")
+            for i, pred in enumerate(result["top_predictions"], 1):
+                label = pred["label"].title()
+                score = pred["score"]
+                confidence_bar = "█" * int(score * 20)  # Visual confidence bar
+                self.out.insert(
+                    "end", f"  {i}. {label:<20} {score:>6.1%} {confidence_bar}\n"
+                )
+
+    def _format_sentiment_result(self, result):
+        """Format sentiment analysis results"""
+        label = result.get("label", "Unknown")
+        score = result.get("score", 0.0)
+
+        # Emoji mapping for sentiment
+        emoji_map = {"POSITIVE": "😊", "NEGATIVE": "😞", "NEUTRAL": "😐"}
+
+        emoji = emoji_map.get(label.upper(), "🤔")
+
+        self.out.insert("end", f"💭 SENTIMENT ANALYSIS RESULTS\n\n")
+        self.out.insert("end", f"Sentiment: {label} {emoji}\n")
+        self.out.insert("end", f"Confidence: {score:.1%}\n\n")
+
+        # Add interpretation
+        if score > 0.8:
+            certainty = "Very confident"
+        elif score > 0.6:
+            certainty = "Confident"
+        else:
+            certainty = "Somewhat uncertain"
+
+        self.out.insert(
+            "end", f"📊 Interpretation: {certainty} in this classification\n"
         )
 
     def clear(self):
