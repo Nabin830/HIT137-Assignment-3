@@ -18,7 +18,7 @@ class AppController:
 
     def select_task(self, name: str):
         # Lazy import to avoid loading ML models at startup
-        from app.gui.tasks import SentimentTask, ImageTask
+        from .tasks import SentimentTask, ImageTask
 
         name = (name or "").lower()
         if name.startswith("sent"):
@@ -69,7 +69,7 @@ class AppController:
     def model_infos() -> dict:
         return {
             "Sentiment": "Text Sentiment via Transformers. Input: a sentence. Output: label + score.",
-            "Image": "Image Classification (MobileViT X-Small). Input: image path. Output: top label + score.",
+            "Image": "Image Classification (ViT Base). Input: image path. Output: top label + score.",
         }
 
     @staticmethod

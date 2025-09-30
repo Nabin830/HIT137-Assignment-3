@@ -1,6 +1,6 @@
 from transformers import pipeline                     # Import Hugging Face pipeline
 from .base import HFModelBase, LoggingMixin, CachingMixin
-from app.utils.decorators import timed, validate_input
+from ..utils.decorators import timed, validate_input
 
 class SentimentModel(LoggingMixin, CachingMixin, HFModelBase):
     # This class handle the text sentiment analysis
