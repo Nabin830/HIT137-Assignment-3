@@ -1,7 +1,7 @@
 from transformers import pipeline  # Importing the  Hugging Face pipeline
 from PIL import Image  # it is used for  opening images
 from .base import HFModelBase, LoggingMixin, CachingMixin
-from ..utils.decorators import timed, validate_input
+from app.utils.decorators import timed, validate_input
 
 
 class ImageClassifier(LoggingMixin, CachingMixin, HFModelBase):

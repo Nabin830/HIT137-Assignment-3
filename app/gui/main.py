@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-from .controllers import AppController
-from .views import InputFrame, OutputFrame, InfoFrame, OOPFrame
+from app.gui.controllers import AppController
+from app.gui.views import InputFrame, OutputFrame, InfoFrame, OOPFrame
 
 
 def main():

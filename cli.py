@@ -2,7 +2,7 @@
 import argparse
 from PIL import Image
 from app.models.sentiment_model import SentimentModel
-from app.models.image_classifier import ImageClassifier
+from app.models.image_model import ImageClassifier
 
 
 def run_sentiment(text: str):

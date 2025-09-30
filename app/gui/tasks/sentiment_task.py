@@ -1,4 +1,4 @@
-from ...models.sentiment_model import SentimentModel
+from app.models.sentiment_model import SentimentModel
 from .base import BaseTask
 
 

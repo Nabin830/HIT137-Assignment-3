@@ -18,7 +18,7 @@ class AppController:
 
     def select_task(self, name: str):
         # Lazy import to avoid loading ML models at startup
-        from .tasks import SentimentTask, ImageTask
+        from app.gui.tasks import SentimentTask, ImageTask
 
         name = (name or "").lower()
         if name.startswith("sent"):
