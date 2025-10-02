@@ -70,3 +70,4 @@ class ImageClassifier(LoggingMixin, CachingMixin, HFModelBase):
     def info(self) -> str:
         # Description of this model for GUI/info display
         return "Image classification (MobileViT X-Small). Input: image path or PIL Image. Output: top predictions with detailed descriptions of image contents."
+
