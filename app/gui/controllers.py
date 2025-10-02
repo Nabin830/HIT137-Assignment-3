@@ -22,11 +22,13 @@ class AppController:
 
         name = (name or "").lower()
         if name.startswith("sent"):
+            print(f"Selecting SentimentTask for model: {name}")
             self._task = SentimentTask()
         elif name.startswith("image"):
+            print(f"Selecting ImageTask for model: {name}")
             self._task = ImageTask()
         else:
-            raise ValueError("Unknown task selected.")
+            raise ValueError(f"Unknown task selected: {name}")
         return self._task
 
     def current_task(self):
@@ -35,10 +37,9 @@ class AppController:
     def run_inference(
         self, input_kind: str, text_value: str = "", image_path: str = ""
     ) -> dict:
-        # Create task if it doesn't exist (lazy loading)
-        if self._task is None:
-            current_model = self.model_var.get()
-            self.select_task(current_model)
+        # Always select the correct task based on current model selection
+        current_model = self.model_var.get()
+        self.select_task(current_model)
 
         if input_kind == "Text":
             if not text_value.strip():
@@ -69,7 +70,7 @@ class AppController:
     def model_infos() -> dict:
         return {
             "Sentiment": "Text Sentiment via Transformers. Input: a sentence. Output: label + score.",
-            "Image": "Image Classification (MobileViT X-Small). Input: image path. Output: top label + score.",
+            "Image": "Image Classification (MobileViT X-Small). Input: image path. Output: detailed predictions with top 5 possibilities and descriptive analysis of image contents.",
         }
 
     @staticmethod
